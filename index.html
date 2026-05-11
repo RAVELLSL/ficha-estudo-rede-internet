@@ -1,0 +1,2500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ficha de Estudo — Redes e Internet</title>
+  <style>
+    :root{
+      --bg:#eef3f8;
+      --paper:#ffffff;
+      --ink:#152238;
+      --muted:#5d6b7c;
+      --soft:#e7edf5;
+      --soft2:#f6f9fc;
+      --line:#d8e2ee;
+      --accent:#1565c0;
+      --accent2:#00a6a6;
+      --warn:#f59e0b;
+      --danger:#dc2626;
+      --ok:#15803d;
+      --dark:#0f172a;
+      --shadow:0 20px 50px rgba(15,23,42,.12);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(21,101,192,.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(0,166,166,.16), transparent 35%),
+        var(--bg);
+      color:var(--ink);
+      line-height:1.65;
+    }
+
+    .ebook{
+      width:min(1180px, calc(100% - 28px));
+      margin:24px auto 80px;
+      background:var(--paper);
+      border-radius:34px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      border:1px solid rgba(216,226,238,.9);
+    }
+
+    .cover{
+      position:relative;
+      min-height:680px;
+      padding:72px 68px;
+      color:#fff;
+      background:
+        linear-gradient(135deg, rgba(4,20,45,.96), rgba(21,101,192,.94) 55%, rgba(0,166,166,.88)),
+        radial-gradient(circle at 80% 15%, rgba(255,255,255,.18), transparent 30%);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:42px;
+      align-items:center;
+    }
+
+    .cover:before{
+      content:"";
+      position:absolute;
+      width:600px;height:600px;
+      right:-180px;top:-150px;
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:50%;
+    }
+    .cover:after{
+      content:"";
+      position:absolute;
+      width:380px;height:380px;
+      right:110px;bottom:-210px;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:50%;
+    }
+
+    .cover .label{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 14px;
+      background:rgba(255,255,255,.13);
+      border:1px solid rgba(255,255,255,.25);
+      border-radius:999px;
+      font-size:.9rem;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      font-weight:700;
+      backdrop-filter:blur(8px);
+    }
+
+    .cover h1{
+      font-size:clamp(2.7rem, 5vw, 5.2rem);
+      line-height:.98;
+      margin:28px 0 20px;
+      letter-spacing:-.055em;
+      max-width:760px;
+    }
+
+    .cover p{
+      font-size:1.18rem;
+      max-width:680px;
+      color:rgba(255,255,255,.88);
+      margin:0 0 28px;
+    }
+
+    .cover .meta{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:14px;
+      max-width:680px;
+      margin-top:36px;
+    }
+
+    .meta-card{
+      background:rgba(255,255,255,.13);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:18px;
+      padding:16px;
+      backdrop-filter:blur(8px);
+    }
+    .meta-card strong{display:block;font-size:1.1rem}
+    .meta-card span{font-size:.84rem;color:rgba(255,255,255,.78)}
+
+    .network-art{
+      position:relative;
+      z-index:2;
+      min-height:460px;
+      background:rgba(255,255,255,.09);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:36px;
+      padding:28px;
+      backdrop-filter:blur(10px);
+      box-shadow:0 30px 80px rgba(0,0,0,.20);
+    }
+
+    .node{
+      position:absolute;
+      width:92px;height:92px;
+      border-radius:26px;
+      background:rgba(255,255,255,.92);
+      color:#123;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:.78rem;
+      text-align:center;
+      box-shadow:0 18px 45px rgba(0,0,0,.24);
+      z-index:2;
+    }
+    .node svg{width:34px;height:34px;margin-bottom:6px}
+    .n1{left:calc(50% - 46px); top:calc(50% - 46px); background:#fff}
+    .n2{left:22px; top:58px}
+    .n3{right:26px; top:56px}
+    .n4{left:44px; bottom:50px}
+    .n5{right:42px; bottom:48px}
+    .n6{left:calc(50% - 46px); top:38px; background:#ecfeff}
+    .link{
+      position:absolute;
+      height:3px;
+      background:rgba(255,255,255,.42);
+      transform-origin:left center;
+      border-radius:999px;
+      z-index:1;
+    }
+    .l1{left:50%;top:50%;width:210px;transform:rotate(-143deg)}
+    .l2{left:50%;top:50%;width:205px;transform:rotate(-37deg)}
+    .l3{left:50%;top:50%;width:200px;transform:rotate(142deg)}
+    .l4{left:50%;top:50%;width:195px;transform:rotate(38deg)}
+    .l5{left:50%;top:50%;width:160px;transform:rotate(-90deg)}
+
+    .wifi-rings{
+      position:absolute;
+      left:50%;top:50%;
+      transform:translate(-50%,-50%);
+      width:230px;height:230px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.16);
+      z-index:0;
+    }
+    .wifi-rings:before,.wifi-rings:after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      inset:32px;
+      border:2px solid rgba(255,255,255,.14);
+    }
+    .wifi-rings:after{inset:70px}
+
+    .toolbar{
+      position:sticky;
+      top:0;
+      z-index:10;
+      display:flex;
+      gap:12px;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 22px;
+      background:rgba(255,255,255,.92);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:blur(12px);
+    }
+    .toolbar .title{font-weight:800;color:var(--dark)}
+    .toolbar .actions{display:flex;gap:10px;flex-wrap:wrap}
+    button,.btn{
+      border:0;
+      border-radius:999px;
+      padding:10px 16px;
+      background:var(--accent);
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      text-decoration:none;
+      font-size:.92rem;
+    }
+    button.secondary,.btn.secondary{background:#e8eef7;color:var(--ink)}
+
+    main{
+      padding:46px 68px 80px;
+    }
+
+    .intro-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:26px;
+      margin:0 0 36px;
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      background:var(--soft2);
+      border-radius:var(--radius);
+      padding:26px;
+    }
+    .panel.white{background:#fff}
+    .panel h2,.panel h3{margin-top:0}
+    .panel ul{margin-bottom:0}
+
+    .toc{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+      counter-reset:toc;
+    }
+    .toc a{
+      counter-increment:toc;
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      text-decoration:none;
+      color:var(--ink);
+      background:#fff;
+      border:1px solid var(--line);
+      padding:14px 16px;
+      border-radius:18px;
+      transition:.2s;
+    }
+    .toc a:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,.08)}
+    .toc a:before{
+      content:counter(toc, decimal-leading-zero);
+      font-weight:900;
+      color:var(--accent);
+      min-width:34px;
+    }
+
+    .chapter{
+      margin:54px 0 0;
+      padding-top:26px;
+      border-top:1px solid var(--line);
+    }
+    .chapter > .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 12px;
+      border-radius:999px;
+      background:#eaf3ff;
+      color:#0f57a3;
+      font-weight:800;
+      font-size:.82rem;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+    h2{
+      font-size:clamp(2rem, 3vw, 3.1rem);
+      line-height:1.08;
+      margin:14px 0 18px;
+      letter-spacing:-.035em;
+      color:#102039;
+    }
+    h3{
+      font-size:1.35rem;
+      margin:30px 0 10px;
+      color:#102039;
+    }
+    h4{font-size:1.05rem;margin:22px 0 8px;color:#102039}
+    p{margin:0 0 16px}
+    .lead{
+      font-size:1.12rem;
+      color:#46566b;
+      max-width:920px;
+    }
+
+    .callout{
+      border-radius:22px;
+      padding:20px 22px;
+      margin:22px 0;
+      border:1px solid var(--line);
+      background:#f8fbff;
+    }
+    .callout strong{color:#0f57a3}
+    .callout.warn{background:#fff8eb;border-color:#fed7aa}
+    .callout.warn strong{color:#b45309}
+    .callout.danger{background:#fff1f2;border-color:#fecdd3}
+    .callout.danger strong{color:#be123c}
+    .callout.ok{background:#effdf4;border-color:#bbf7d0}
+    .callout.ok strong{color:#166534}
+
+    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .card{
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:20px;
+      background:#fff;
+      box-shadow:0 8px 24px rgba(15,23,42,.04);
+    }
+    .card h3,.card h4{margin-top:0}
+    .tag{
+      display:inline-block;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:.78rem;
+      font-weight:800;
+      color:#0f57a3;
+      background:#eaf3ff;
+      margin-bottom:10px;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin:18px 0 26px;
+      overflow:hidden;
+      border-radius:16px;
+      border:1px solid var(--line);
+      font-size:.96rem;
+    }
+    th,td{padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+    th{background:#eef5ff;text-align:left;color:#123;font-weight:900}
+    tr:last-child td{border-bottom:0}
+
+    .diagram{
+      margin:24px 0;
+      padding:24px;
+      border-radius:26px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg,#f9fbff,#eef6ff);
+      overflow:hidden;
+    }
+    .diagram-title{
+      font-weight:900;
+      color:#102039;
+      margin-bottom:16px;
+    }
+
+    .home-network{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:16px;
+      align-items:center;
+      text-align:center;
+    }
+    .device{
+      min-height:112px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:16px 12px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 8px 24px rgba(15,23,42,.05);
+    }
+    .device .icon{
+      width:42px;height:42px;border-radius:12px;background:#eaf3ff;
+      display:grid;place-items:center;margin-bottom:8px;color:#0f57a3;font-size:1.45rem;
+    }
+    .arrow{
+      height:6px;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      border-radius:999px;
+      position:relative;
+      margin:18px 0;
+    }
+    .arrow:after{
+      content:"";
+      position:absolute;
+      right:-1px;top:50%;
+      transform:translateY(-50%);
+      border-left:12px solid var(--accent2);
+      border-top:8px solid transparent;
+      border-bottom:8px solid transparent;
+    }
+
+    .topology{
+      min-height:330px;
+      position:relative;
+      border-radius:26px;
+      background:#fff;
+      border:1px dashed #bed0e4;
+      overflow:hidden;
+    }
+    .topology .center{
+      position:absolute;left:50%;top:50%;
+      transform:translate(-50%,-50%);
+      width:118px;height:80px;border-radius:20px;
+      background:#0f57a3;color:#fff;display:grid;place-items:center;
+      font-weight:900;z-index:2;
+      box-shadow:0 14px 34px rgba(15,87,163,.25);
+    }
+    .topology .tdev{
+      position:absolute;width:96px;height:68px;border-radius:18px;background:#eef6ff;border:1px solid #c9d9eb;
+      display:grid;place-items:center;text-align:center;font-size:.82rem;font-weight:800;color:#16324f;
+      z-index:2;
+    }
+    .td1{left:7%;top:10%}.td2{right:8%;top:12%}.td3{left:8%;bottom:12%}.td4{right:8%;bottom:12%}.td5{left:41%;top:6%}
+    .topology .wire{
+      position:absolute;left:50%;top:50%;height:3px;background:#b9cce0;transform-origin:left center;z-index:1;border-radius:999px;
+    }
+    .w1{width:250px;transform:rotate(-148deg)}.w2{width:238px;transform:rotate(-33deg)}.w3{width:238px;transform:rotate(145deg)}.w4{width:236px;transform:rotate(32deg)}.w5{width:122px;transform:rotate(-90deg)}
+
+    .router-ui{
+      background:#0f172a;
+      border-radius:26px;
+      padding:18px;
+      color:#e5edf6;
+      box-shadow:0 20px 45px rgba(15,23,42,.22);
+    }
+    .router-head{
+      display:flex;align-items:center;justify-content:space-between;
+      border-bottom:1px solid rgba(255,255,255,.1);
+      padding-bottom:12px;margin-bottom:16px;
+    }
+    .lights{display:flex;gap:6px}
+    .light{width:10px;height:10px;border-radius:50%;background:#22c55e;box-shadow:0 0 12px rgba(34,197,94,.7)}
+    .light:nth-child(2){background:#38bdf8;box-shadow:0 0 12px rgba(56,189,248,.7)}
+    .light:nth-child(3){background:#facc15;box-shadow:0 0 12px rgba(250,204,21,.7)}
+    .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .setting{
+      border-radius:16px;
+      padding:13px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .setting span{display:block;color:#9fb0c5;font-size:.8rem}
+    .setting strong{display:block;margin-top:3px;color:#fff}
+
+    .checklist{
+      display:grid;
+      gap:10px;
+      margin:18px 0;
+    }
+    .check{
+      display:grid;
+      grid-template-columns:28px 1fr;
+      gap:10px;
+      align-items:start;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:13px 14px;
+    }
+    .box{
+      width:22px;height:22px;border:2px solid var(--accent);border-radius:6px;margin-top:2px;
+    }
+
+    .exercise{
+      background:linear-gradient(180deg,#fff,#f7fbff);
+      border:1px solid var(--line);
+      border-left:6px solid var(--accent);
+      border-radius:20px;
+      padding:20px;
+      margin:18px 0;
+    }
+    .exercise h4{margin-top:0}
+
+    .glossary{
+      columns:2 280px;
+      column-gap:30px;
+    }
+    .glossary p{
+      break-inside:avoid;
+      border-bottom:1px solid var(--line);
+      padding-bottom:10px;
+      margin-bottom:12px;
+    }
+    .glossary strong{color:#0f57a3}
+
+    .footer{
+      background:#0f172a;
+      color:#dbe7f3;
+      padding:36px 68px;
+    }
+    .footer a{color:#93c5fd}
+    .footer p{color:#b9c6d8}
+
+    .mini-screen{
+      border:1px solid #cbd8e8;
+      border-radius:24px;
+      overflow:hidden;
+      background:#fff;
+      margin:18px 0;
+      box-shadow:0 12px 28px rgba(15,23,42,.07);
+    }
+    .mini-bar{
+      background:#eaf1f8;
+      border-bottom:1px solid #cbd8e8;
+      padding:10px 14px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      font-weight:800;
+      color:#24364d;
+    }
+    .dot{width:11px;height:11px;border-radius:50%;background:#94a3b8}
+    .mini-content{padding:18px}
+    .input-row{
+      display:grid;
+      grid-template-columns:180px 1fr;
+      gap:10px;
+      align-items:center;
+      margin:10px 0;
+    }
+    .fake-input{
+      background:#f8fafc;
+      border:1px solid #cbd8e8;
+      border-radius:12px;
+      padding:10px 12px;
+      font-family:Consolas,monospace;
+      color:#0f172a;
+    }
+
+    .print-note{
+      font-size:.9rem;
+      color:var(--muted);
+      margin-top:12px;
+    }
+
+    .topbar {
+      height: 70px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      max-width: 1360px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      font-weight: 900;
+      color: #102039;
+      letter-spacing: .01em;
+      font-size: 1.02rem;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: none;
+      gap: 8px;
+      overflow-x: auto;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #2f3a44;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .book-app {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 14px 18px 18px;
+      height: calc(100dvh - 70px);
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .sidebar {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.1);
+      padding: 14px;
+      overflow: auto;
+    }
+
+    .sidebar h2 {
+      font-size: 1.02rem;
+      margin: 0 0 8px;
+      color: #302116;
+    }
+
+    .sidebar p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .sidebar-nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .sidebar-nav a {
+      text-decoration: none;
+      color: #2f2a24;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: 9px 11px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .sidebar-nav a:hover,
+    .sidebar-nav a.active {
+      border-color: rgba(21, 101, 192, 0.35);
+      color: var(--accent);
+      transform: translateX(2px);
+      background: #f8fbff;
+    }
+
+    .viewer {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .viewer-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: linear-gradient(110deg, #102039, #1f4f84);
+      color: #eaf4ff;
+      border: 1px solid rgba(147, 197, 253, 0.3);
+      border-radius: 999px;
+      padding: 8px 10px;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.28);
+    }
+
+    .viewer-status {
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .viewer-preference {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #eaf4ff;
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .viewer-preference select {
+      appearance: none;
+      border: 1px solid rgba(147, 197, 253, 0.36);
+      background: rgba(255, 255, 255, 0.1);
+      color: #eaf4ff;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .viewer-preference select option {
+      color: #102039;
+      background: #fff;
+    }
+
+    .viewer-toolbar button {
+      appearance: none;
+      border: 1px solid rgba(147, 197, 253, 0.36);
+      background: rgba(255, 255, 255, 0.08);
+      color: #eaf4ff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .viewer-toolbar button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .viewer-stage {
+      position: relative;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+      overflow: hidden;
+    }
+
+    .book {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .page {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      transition: opacity .28s ease;
+    }
+
+    .page.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .page.cover {
+      background:
+        linear-gradient(135deg, rgba(4,20,45,.96), rgba(21,101,192,.94) 55%, rgba(0,166,166,.88)),
+        radial-gradient(circle at 80% 15%, rgba(255,255,255,.18), transparent 30%);
+      color: #fff;
+      min-height: 0;
+      padding: clamp(24px, 3.2vw, 52px);
+      align-items: start;
+    }
+
+    .page.cover h1 {
+      font-size: clamp(2.1rem, 4.1vw, 4rem);
+    }
+
+    .page-content {
+      width: 100%;
+      padding: clamp(18px, 2.2vw, 34px);
+      transform-origin: top left;
+      will-change: transform;
+      overflow: hidden;
+    }
+
+    .viewer-stage.mode-reading .page.active {
+      overflow: auto;
+    }
+
+    .viewer-stage.mode-reading .page.active::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .viewer-stage.mode-reading .page.active::-webkit-scrollbar-thumb {
+      background: rgba(21, 101, 192, 0.42);
+      border-radius: 999px;
+      border: 2px solid rgba(255, 251, 242, 0.85);
+    }
+
+    .viewer-stage.mode-fit .page.active {
+      overflow: hidden;
+    }
+
+    .page-content.tight-mode {
+      font-size: .95em;
+    }
+
+    .page-content.tight-mode .card,
+    .page-content.tight-mode .exercise,
+    .page-content.tight-mode .callout,
+    .page-content.tight-mode .panel,
+    .page-content.tight-mode .device,
+    .page-content.tight-mode .setting,
+    .page-content.tight-mode .check {
+      padding: 12px;
+    }
+
+    .scale-note {
+      position: absolute;
+      right: 12px;
+      bottom: 10px;
+      background: rgba(16, 32, 57, 0.75);
+      color: #fff;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 0.74rem;
+      z-index: 20;
+      display: none;
+    }
+
+    .viewer-stage.is-scaled .scale-note {
+      display: inline-flex;
+    }
+
+    @media(max-width:1080px){
+      body {
+        overflow: auto;
+      }
+
+      .nav {
+        display: flex;
+      }
+
+      .book-app {
+        height: auto;
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .viewer-stage {
+        min-height: 75vh;
+      }
+
+      .page {
+        position: relative;
+        inset: auto;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      .page-content {
+        transform: none !important;
+        width: auto !important;
+      }
+
+      .viewer-toolbar,
+      .viewer-preference,
+      .scale-note {
+        display: none !important;
+      }
+    }
+
+    @media(max-width:920px){
+      .cover{grid-template-columns:1fr;padding:48px 30px;min-height:auto}
+      .network-art{min-height:390px}
+      .page-content{padding:20px}
+      .footer{padding:30px 24px}
+      .intro-grid,.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+      .toc{grid-template-columns:1fr}
+      .cover .meta{grid-template-columns:1fr}
+      .home-network{grid-template-columns:1fr}
+      .arrow{transform:rotate(90deg);width:80px;margin:18px auto}
+      .input-row{grid-template-columns:1fr}
+    }
+
+    @media print{
+      body{background:#fff;overflow:visible}
+      .topbar,
+      .sidebar,
+      .viewer-toolbar,
+      .scale-note {display:none !important}
+      .book-app,
+      .viewer,
+      .viewer-stage,
+      .book {display:block;height:auto;overflow:visible;box-shadow:none;border:none;padding:0;margin:0}
+      .page {position:static;opacity:1;visibility:visible;border:none;box-shadow:none;page-break-after:always}
+      .page-content {transform:none !important;width:auto !important;padding:20px}
+      .cover{min-height:auto;color:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+      a{color:inherit;text-decoration:none}
+      button{display:none}
+    }
+  
+
+    /* Componentes da ficha de estudo */
+    .study-header {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #ffffff, #f8fbff);
+      border-radius: 22px;
+      padding: 20px;
+      margin: 18px 0;
+      box-shadow: 0 8px 24px rgba(15,23,42,.04);
+    }
+
+    .study-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+
+    .study-grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .study-card, .answer-card, .rubric-card, .lab-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(15,23,42,.04);
+    }
+
+    .study-card h3, .study-card h4,
+    .answer-card h3, .answer-card h4,
+    .rubric-card h3, .rubric-card h4,
+    .lab-card h3, .lab-card h4 {
+      margin-top: 0;
+    }
+
+    .study-card strong, .answer-card strong, .lab-card strong {
+      color: #0f57a3;
+    }
+
+    .ficha-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #eaf3ff;
+      border: 1px solid #c9d9eb;
+      color: #0f57a3;
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin-bottom: 9px;
+    }
+
+    .answer-card {
+      background: linear-gradient(180deg, #ffffff, #f8fbff);
+      margin: 16px 0;
+    }
+
+    .answer-box {
+      min-height: 84px;
+      margin-top: 10px;
+      border: 1.5px dashed #9db8d7;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: #102039;
+      outline: none;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    .answer-box:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(21,101,192,.12);
+    }
+
+    .answer-box:empty::before {
+      content: attr(data-placeholder);
+      color: #7d8ca0;
+      pointer-events: none;
+    }
+
+    .response-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .mini-checklist {
+      list-style: none;
+      padding-left: 0;
+      display: grid;
+      gap: 8px;
+      margin: 12px 0 0;
+    }
+
+    .mini-checklist li {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      align-items: start;
+      margin: 0;
+    }
+
+    .mini-checklist li::before {
+      content: "✓";
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+      background: #effdf4;
+      color: #166534;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: .78rem;
+      margin-top: 2px;
+    }
+
+    .rubric {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .rubric-card {
+      background: #f8fbff;
+    }
+
+    .rubric-card b {
+      display: block;
+      color: #0f57a3;
+      margin-bottom: 6px;
+    }
+
+    .lab-steps {
+      counter-reset: lab;
+      display: grid;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .lab-steps .lab-step {
+      counter-increment: lab;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 13px;
+    }
+
+    .lab-steps .lab-step::before {
+      content: counter(lab);
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    @media(max-width:920px){
+      .study-grid, .study-grid.three, .response-row, .rubric { grid-template-columns: 1fr; }
+    }
+
+  
+
+    /* Capa reorganizada: conteúdo completo sem barra de rolagem no visualizador */
+    .page.cover-redes {
+      padding: 0 !important;
+      min-height: 0 !important;
+      display: block !important;
+      overflow: hidden !important;
+      background:
+        radial-gradient(circle at 14% 12%, rgba(255,255,255,.16), transparent 18rem),
+        radial-gradient(circle at 84% 8%, rgba(0,166,166,.24), transparent 18rem),
+        linear-gradient(135deg, rgba(4,20,45,.98), rgba(21,101,192,.95) 54%, rgba(0,166,166,.88));
+    }
+
+    .viewer-stage.mode-reading .page.cover-redes.active,
+    .viewer-stage.mode-fit .page.cover-redes.active {
+      overflow: hidden !important;
+    }
+
+    .page.cover-redes .cover-content {
+      height: 100%;
+      width: 100%;
+      padding: clamp(14px, 1.7vw, 24px) !important;
+      overflow: hidden;
+      display: grid;
+      align-items: center;
+    }
+
+    .cover-redes .cover-layout {
+      height: 100%;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.78fr);
+      gap: clamp(14px, 2vw, 24px);
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cover-redes .cover-copy {
+      min-width: 0;
+      align-self: center;
+    }
+
+    .cover-redes .label {
+      padding: 6px 11px;
+      font-size: clamp(.72rem, .82vw, .86rem);
+      line-height: 1.15;
+      margin-bottom: clamp(8px, 1vw, 12px);
+    }
+
+    .cover-redes h1 {
+      font-size: clamp(2rem, 3.55vw, 3.55rem) !important;
+      line-height: .98;
+      letter-spacing: -.052em;
+      max-width: 760px;
+      margin: 0 0 clamp(10px, 1.2vw, 14px);
+      color: #ffffff;
+    }
+
+    .cover-redes p {
+      max-width: 690px;
+      font-size: clamp(.92rem, 1.08vw, 1.04rem);
+      line-height: 1.42;
+      margin: 0;
+      color: rgba(255,255,255,.88);
+    }
+
+    .cover-redes .meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      max-width: 710px;
+      margin-top: clamp(12px, 1.45vw, 18px);
+    }
+
+    .cover-redes .meta-card {
+      border-radius: 15px;
+      padding: clamp(10px, 1vw, 13px);
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.20);
+    }
+
+    .cover-redes .meta-card strong {
+      display: block;
+      font-size: clamp(.9rem, .95vw, 1.02rem);
+      line-height: 1.15;
+      color: #ffffff;
+    }
+
+    .cover-redes .meta-card span {
+      display: block;
+      margin-top: 3px;
+      font-size: clamp(.72rem, .78vw, .82rem);
+      line-height: 1.24;
+      color: rgba(255,255,255,.78);
+    }
+
+    .cover-redes .cover-visual {
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .cover-redes .network-art {
+      width: 100%;
+      min-height: 0;
+      height: clamp(240px, 41vh, 330px);
+      padding: 18px;
+      border-radius: 28px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 22px 56px rgba(0,0,0,.20);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .cover-redes .wifi-rings {
+      width: 190px;
+      height: 190px;
+      opacity: .92;
+    }
+
+    .cover-redes .wifi-rings::before { inset: 28px; }
+    .cover-redes .wifi-rings::after { inset: 62px; }
+
+    .cover-redes .node {
+      width: clamp(66px, 7vw, 80px);
+      height: clamp(66px, 7vw, 80px);
+      border-radius: 21px;
+      font-size: clamp(.68rem, .72vw, .76rem);
+      box-shadow: 0 14px 34px rgba(0,0,0,.22);
+    }
+
+    .cover-redes .node span {
+      display: block;
+      line-height: 1.1;
+      margin-top: 3px;
+    }
+
+    .cover-redes .n1 { left: calc(50% - clamp(33px, 3.5vw, 40px)); top: calc(50% - clamp(33px, 3.5vw, 40px)); }
+    .cover-redes .n2 { left: 20px; top: 34px; }
+    .cover-redes .n3 { right: 22px; top: 34px; }
+    .cover-redes .n4 { left: 28px; bottom: 30px; }
+    .cover-redes .n5 { right: 28px; bottom: 30px; }
+    .cover-redes .n6 { left: calc(50% - clamp(33px, 3.5vw, 40px)); top: 20px; }
+
+    .cover-redes .link { height: 3px; }
+    .cover-redes .l1 { width: clamp(128px, 18vw, 176px); }
+    .cover-redes .l2 { width: clamp(128px, 18vw, 176px); }
+    .cover-redes .l3 { width: clamp(128px, 18vw, 172px); }
+    .cover-redes .l4 { width: clamp(128px, 18vw, 172px); }
+    .cover-redes .l5 { width: clamp(94px, 13vw, 132px); }
+
+    .cover-topic-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .cover-topic-strip span {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 30px;
+      padding: 5px 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.20);
+      color: rgba(255,255,255,.90);
+      font-size: clamp(.68rem, .76vw, .78rem);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    @media (min-width: 1081px) and (max-height: 760px) {
+      .page.cover-redes .cover-content {
+        padding: 12px 16px !important;
+      }
+
+      .cover-redes .cover-layout {
+        grid-template-columns: minmax(0, 1.1fr) minmax(240px, .72fr);
+        gap: 14px;
+      }
+
+      .cover-redes h1 {
+        font-size: clamp(1.8rem, 3.1vw, 2.95rem) !important;
+      }
+
+      .cover-redes p {
+        font-size: .9rem;
+        line-height: 1.34;
+      }
+
+      .cover-redes .meta {
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .cover-redes .meta-card {
+        padding: 8px 9px;
+      }
+
+      .cover-redes .meta-card strong {
+        font-size: .86rem;
+      }
+
+      .cover-redes .meta-card span {
+        font-size: .68rem;
+      }
+
+      .cover-redes .network-art {
+        height: clamp(210px, 36vh, 285px);
+        border-radius: 24px;
+      }
+
+      .cover-redes .node {
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
+        font-size: .63rem;
+      }
+
+      .cover-topic-strip span {
+        min-height: 26px;
+        font-size: .66rem;
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .page.cover-redes {
+        overflow: visible !important;
+      }
+
+      .page.cover-redes .cover-content {
+        height: auto;
+        overflow: visible;
+      }
+
+      .cover-redes .cover-layout {
+        height: auto;
+        grid-template-columns: 1fr;
+      }
+
+      .cover-redes .meta {
+        grid-template-columns: 1fr;
+      }
+
+      .cover-redes .network-art {
+        height: 320px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Ficha de Estudo — Redes e Internet</div>
+      <nav class="nav" aria-label="Navegação da ficha de estudo">
+        <a href="#orientacoes">Orientações</a>
+        <a href="#diagnostico">Diagnóstico</a>
+        <a href="#sumario">Sumário</a>
+        <a href="#cap1">Conceitos</a>
+        <a href="#cap8">Wi-Fi</a>
+        <a href="#cap12">Segurança</a>
+        <a href="#estudo-dirigido">Revisão</a>
+        <a href="#projeto-final">Projeto final</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="book-app">
+    <aside class="sidebar" aria-label="Sumário lateral">
+      <h2>Sumário</h2>
+      <p>Selecione um tópico para exibir no painel de leitura.</p>
+      <nav class="sidebar-nav" id="sidebarNav">
+        <a href="#capa">Capa</a>
+        <a href="#orientacoes">Orientações de estudo</a>
+        <a href="#diagnostico">Diagnóstico inicial</a>
+        <a href="#objetivos">Objetivos de aprendizagem</a>
+        <a href="#sumario">Sumário</a>
+        <a href="#cap1">1. O que são redes de computadores</a>
+        <a href="#cap2">2. Breve história das redes</a>
+        <a href="#cap3">3. Tipos de redes</a>
+        <a href="#cap4">4. Estrutura de uma rede doméstica</a>
+        <a href="#cap5">5. Equipamentos principais da rede</a>
+        <a href="#cap6">6. Como a internet chega até sua casa</a>
+        <a href="#cap7">7. Endereços, IP, DNS e DHCP</a>
+        <a href="#cap8">8. Wi-Fi: nomes, senhas, bandas e sinal</a>
+        <a href="#cap9">9. Configurações básicas do roteador</a>
+        <a href="#cap10">10. Repetidores, pontos de acesso e rede mesh</a>
+        <a href="#cap11">11. Switches e conexões por cabo</a>
+        <a href="#cap12">12. Segurança da rede doméstica</a>
+        <a href="#cap13">13. Problemas comuns e soluções básicas</a>
+        <a href="#cap14">14. Exercícios práticos</a>
+        <a href="#estudo-dirigido">15. Estudo dirigido e revisão</a>
+        <a href="#projeto-final">16. Projeto final</a>
+        <a href="#autoavaliacao">17. Autoavaliação</a>
+        <a href="#glossario">18. Glossário</a>
+        <a href="#resumo">19. Resumo</a>
+        <a href="#fontes">Fontes</a>
+      </nav>
+    </aside>
+
+    <section class="viewer" aria-label="Área de exibição da apostila">
+      <div class="viewer-toolbar">
+        <button id="prevPage" type="button">◀ Anterior</button>
+        <div class="viewer-status" id="viewerStatus">Tópico 1 de 1</div>
+        <label class="viewer-preference" for="scalePreference">
+          Exibição:
+          <select id="scalePreference">
+            <option value="reading" selected>Modo leitura</option>
+            <option value="fit">Modo reduzido</option>
+          </select>
+        </label>
+        <button id="nextPage" type="button">Próximo ▶</button>
+      </div>
+
+      <div class="viewer-stage" id="viewerStage">
+        <div class="scale-note" id="scaleNote">Ajuste automático para caber na tela</div>
+        <div class="book" id="bookPages">
+    <section class="page cover cover-redes" id="capa">
+      <div class="page-content cover-content">
+        <div class="cover-layout">
+          <div class="cover-copy">
+            <span class="label">Ficha de estudo • nível iniciante</span>
+            <h1>Redes de Computadores e Internet</h1>
+            <p>Ficha de estudo ampla, visual e prática para compreender redes domésticas, internet, Wi‑Fi, roteadores, repetidores, switches, configurações essenciais, diagnóstico de problemas e segurança digital.</p>
+            <div class="meta" aria-label="Informações rápidas da ficha">
+              <div class="meta-card"><strong>Nível básico</strong><span>Para quem está começando</span></div>
+              <div class="meta-card"><strong>Foco prático</strong><span>Rede doméstica e segurança</span></div>
+              <div class="meta-card"><strong>Atualizado</strong><span>Abril de 2026</span></div>
+            </div>
+          </div>
+          <div class="cover-visual">
+            <div class="network-art cover-network" aria-label="Ilustração de rede doméstica">
+              <div class="wifi-rings"></div>
+              <div class="link l1"></div><div class="link l2"></div><div class="link l3"></div><div class="link l4"></div><div class="link l5"></div>
+              <div class="node n1">📶<span>Roteador</span></div>
+              <div class="node n2">💻<span>Notebook</span></div>
+              <div class="node n3">📱<span>Celular</span></div>
+              <div class="node n4">🖨️<span>Impressora</span></div>
+              <div class="node n5">📺<span>Smart TV</span></div>
+              <div class="node n6">🌐<span>Internet</span></div>
+            </div>
+            <div class="cover-topic-strip" aria-label="Temas abordados na ficha">
+              <span>Wi‑Fi</span>
+              <span>Roteador</span>
+              <span>IP/DNS</span>
+              <span>Segurança</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      <section class="page chapter" id="orientacoes">
+        <span class="kicker">Ficha de estudo</span>
+        <h2>Orientações de estudo</h2>
+        <p class="lead">Esta ficha reorganiza o conteúdo de Redes e Internet em formato de estudo guiado. O objetivo é ajudar o aluno a ler, responder, praticar, revisar e aplicar os conceitos em situações reais de rede doméstica, Wi-Fi e segurança digital.</p>
+        <div class="study-grid">
+          <div class="study-card">
+            <span class="ficha-tag">Como usar</span>
+            <h3>Roteiro recomendado</h3>
+            <ul class="mini-checklist">
+              <li>Leia cada tópico com atenção e destaque os termos técnicos.</li>
+              <li>Responda às caixas editáveis com suas próprias palavras.</li>
+              <li>Compare as respostas com os quadros, tabelas e exemplos da ficha.</li>
+              <li>Faça as atividades práticas usando sua rede doméstica, quando for seguro.</li>
+              <li>Finalize com o projeto final e a autoavaliação.</li>
+            </ul>
+          </div>
+          <div class="study-card">
+            <span class="ficha-tag">Salvamento</span>
+            <h3>Campos de resposta</h3>
+            <p>As áreas de resposta são editáveis. Clique dentro da caixa, digite, apague ou altere quando quiser. As respostas ficam salvas no navegador usado pelo aluno, por meio de armazenamento local.</p>
+            <div class="callout ok"><strong>Importante:</strong> se o arquivo for aberto em outro navegador, outro computador ou após limpar os dados do navegador, as respostas podem não aparecer.</div>
+          </div>
+        </div>
+        <div class="study-grid three">
+          <div class="study-card"><h3>Objetivo conceitual</h3><p>Compreender o que é uma rede, como a internet se conecta à casa e qual é o papel dos equipamentos.</p></div>
+          <div class="study-card"><h3>Objetivo prático</h3><p>Reconhecer roteador, modem/ONT, Wi-Fi, senha, banda, cabo, switch, repetidor, access point e mesh.</p></div>
+          <div class="study-card"><h3>Objetivo de segurança</h3><p>Adotar configurações básicas de proteção, como senha forte, WPA2/WPA3, atualização do roteador e rede de convidados.</p></div>
+        </div>
+      </section>
+
+      <section class="page chapter" id="diagnostico">
+        <span class="kicker">Antes de estudar</span>
+        <h2>Diagnóstico inicial</h2>
+        <p class="lead">Responda antes de estudar. O objetivo não é acertar tudo, mas identificar o que você já sabe e o que precisa desenvolver.</p>
+        <div class="response-row">
+          <div class="answer-card"><strong>1. O que é uma rede de computadores?</strong><div class="answer-box" contenteditable="true" data-placeholder="Resposta do aluno..." data-save-id="diag-rede"></div></div>
+          <div class="answer-card"><strong>2. Qual é a diferença entre Wi-Fi e internet?</strong><div class="answer-box" contenteditable="true" data-placeholder="Resposta do aluno..." data-save-id="diag-wifi-internet"></div></div>
+          <div class="answer-card"><strong>3. Para que serve um roteador?</strong><div class="answer-box" contenteditable="true" data-placeholder="Resposta do aluno..." data-save-id="diag-roteador"></div></div>
+          <div class="answer-card"><strong>4. Cite dois cuidados para deixar uma rede doméstica mais segura.</strong><div class="answer-box" contenteditable="true" data-placeholder="Resposta do aluno..." data-save-id="diag-seguranca"></div></div>
+        </div>
+        <div class="callout"><strong>Depois do estudo:</strong> volte a esta página e compare suas respostas iniciais com o que você aprendeu. Isso ajuda a perceber sua evolução.</div>
+      </section>
+
+      <section class="page" id="objetivos">
+        <h2>Objetivos da aprendizagem</h2>
+        <div class="study-header"><strong>Propósito da ficha:</strong> transformar a apostila em um material de revisão ativa, com leitura orientada, respostas do aluno, estudo dirigido, atividades práticas e projeto final. O aluno deve sair capaz de explicar uma rede doméstica, reconhecer equipamentos, interpretar configurações básicas e tomar decisões seguras.</div>
+        <p>Esta apostila foi criada para alunos iniciantes que desejam compreender como funciona uma rede de computadores, principalmente dentro de casa. O objetivo não é formar um técnico de redes avançado, mas dar ao aluno segurança para reconhecer equipamentos, entender configurações básicas, melhorar o sinal Wi-Fi e adotar boas práticas de proteção.</p>
+        <div class="intro-grid">
+        <div class="panel white">
+          <h2>Apresentação</h2>
+          <p>Esta apostila foi criada para alunos iniciantes que desejam compreender como funciona uma rede de computadores, principalmente dentro de casa. O objetivo não é formar um técnico de redes avançado, mas dar ao aluno segurança para reconhecer equipamentos, entender configurações básicas, melhorar o sinal Wi‑Fi e adotar boas práticas de proteção.</p>
+          <p>Ao final, o aluno deverá saber diferenciar modem, roteador, switch, repetidor, ponto de acesso e rede mesh; compreender termos como IP, Wi‑Fi, senha da rede, DNS, DHCP e gateway; e realizar ajustes simples com mais consciência.</p>
+          <div class="callout ok"><strong>Ideia central:</strong> uma rede é um conjunto de dispositivos que trocam informações. A internet é uma grande rede mundial. A rede doméstica é a pequena rede da sua casa conectada à internet.</div>
+        </div>
+        <div class="panel">
+          <h3>O que o aluno aprenderá</h3>
+          <ul>
+            <li>História básica das redes e da internet.</li>
+            <li>O que é uma rede local e uma rede sem fio.</li>
+            <li>Função de modem, roteador, switch, repetidor e access point.</li>
+            <li>Como o sinal chega ao computador, celular, TV e impressora.</li>
+            <li>Configurações básicas de Wi‑Fi, senha, nome da rede e segurança.</li>
+            <li>Como identificar problemas comuns e agir com prudência.</li>
+          </ul>
+          <p class="print-note">Dica: use o botão “Imprimir / salvar em PDF” para transformar esta apostila em material impresso.</p>
+        </div>
+        </div>
+      </section>
+
+      <section id="sumario" class="page chapter">
+        <span class="kicker">Organização</span>
+        <h2>Sumário</h2>
+        <div class="toc">
+          <a href="#cap1">O que são redes de computadores</a>
+          <a href="#cap2">Breve história das redes</a>
+          <a href="#cap3">Tipos de redes</a>
+          <a href="#cap4">Estrutura de uma rede doméstica</a>
+          <a href="#cap5">Equipamentos principais</a>
+          <a href="#cap6">Como a internet chega até sua casa</a>
+          <a href="#cap7">Endereços, IP, DNS e DHCP</a>
+          <a href="#cap8">Wi‑Fi: nomes, senhas, bandas e sinal</a>
+          <a href="#cap9">Configurações básicas do roteador</a>
+          <a href="#cap10">Repetidores, pontos de acesso e rede mesh</a>
+          <a href="#cap11">Switches e conexões por cabo</a>
+          <a href="#cap12">Segurança da rede doméstica</a>
+          <a href="#cap13">Problemas comuns e soluções</a>
+          <a href="#cap14">Exercícios práticos</a>
+          <a href="#estudo-dirigido">Estudo dirigido e revisão</a>
+          <a href="#projeto-final">Projeto final</a>
+          <a href="#autoavaliacao">Autoavaliação</a>
+          <a href="#glossario">Glossário essencial</a>
+          <a href="#fontes">Fontes consultadas</a>
+        </div>
+      </section>
+
+      <section class="page chapter" id="cap1">
+        <span class="kicker">Capítulo 1</span>
+        <h2>O que são redes de computadores</h2>
+        <p class="lead">Rede de computadores é um conjunto de dispositivos conectados para trocar dados, compartilhar recursos e acessar serviços. Esses dispositivos podem ser computadores, celulares, tablets, impressoras, smart TVs, câmeras de segurança, caixas de som inteligentes e videogames.</p>
+
+        <p>Quando um notebook imprime em uma impressora sem fio, existe uma rede funcionando. Quando o celular acessa vídeos pela internet usando o Wi‑Fi de casa, existe uma rede funcionando. Quando uma smart TV abre um aplicativo de streaming, também existe uma rede funcionando.</p>
+
+        <div class="diagram">
+          <div class="diagram-title">Exemplo simples de comunicação em rede</div>
+          <div class="home-network">
+            <div class="device"><div class="icon">📱</div><strong>Celular</strong><span>envia pedido</span></div>
+            <div>
+              <div class="arrow"></div>
+              <div class="device"><div class="icon">📶</div><strong>Roteador</strong><span>encaminha os dados</span></div>
+              <div class="arrow"></div>
+            </div>
+            <div class="device"><div class="icon">🌐</div><strong>Internet</strong><span>responde ao pedido</span></div>
+          </div>
+        </div>
+
+        <h3>Para que serve uma rede?</h3>
+        <div class="grid-3">
+          <div class="card"><span class="tag">Comunicação</span><p>Permite que os dispositivos troquem informações, mensagens, arquivos, vídeos e comandos.</p></div>
+          <div class="card"><span class="tag">Compartilhamento</span><p>Permite usar impressoras, pastas, arquivos e conexão de internet entre vários dispositivos.</p></div>
+          <div class="card"><span class="tag">Acesso</span><p>Permite acessar sites, serviços online, bancos digitais, redes sociais, aulas, e-mails e aplicativos.</p></div>
+        </div>
+
+        <div class="callout"><strong>Explicação para iniciantes:</strong> imagine a rede como um sistema de ruas. Os dispositivos são casas, os dados são veículos, o roteador é uma rotatória importante e a internet é uma cidade muito maior conectada a outras cidades.</div>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — conceito de rede</h3>
+          <p>Explique, com suas palavras, a diferença entre rede de computadores, rede doméstica e internet.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap1-conceito"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap2">
+        <span class="kicker">Capítulo 2</span>
+        <h2>Breve história das redes</h2>
+        <p class="lead">As redes surgiram da necessidade de fazer máquinas conversarem entre si. No início, computadores eram isolados, grandes e caros. Com o tempo, universidades, empresas, governos e residências passaram a precisar de comunicação rápida entre equipamentos.</p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Antes das redes modernas</h3>
+            <p>A comunicação à distância já existia antes dos computadores pessoais, com telégrafo, telefone e rádio. Essas tecnologias abriram caminho para a ideia de transmitir informação por sinais elétricos, ondas e cabos.</p>
+          </div>
+          <div class="card">
+            <h3>ARPANET e internet</h3>
+            <p>A ARPANET, criada nos Estados Unidos, é frequentemente lembrada como uma das bases históricas da internet. Ela mostrou que computadores em locais diferentes poderiam trocar dados por meio de protocolos de comunicação.</p>
+          </div>
+        </div>
+
+        <table>
+          <thead><tr><th>Período</th><th>Marco</th><th>Importância para o aluno</th></tr></thead>
+          <tbody>
+            <tr><td>Décadas de 1960 e 1970</td><td>Redes acadêmicas e militares</td><td>Computadores começam a se comunicar em ambientes especializados.</td></tr>
+            <tr><td>Década de 1980</td><td>Popularização de redes locais</td><td>Empresas passam a conectar computadores para compartilhar arquivos e impressoras.</td></tr>
+            <tr><td>Década de 1990</td><td>Internet comercial e web</td><td>Usuários comuns começam a acessar sites, e-mails e serviços online.</td></tr>
+            <tr><td>Anos 2000</td><td>Banda larga e Wi‑Fi doméstico</td><td>A internet entra nas casas com mais velocidade e sem depender apenas de cabos.</td></tr>
+            <tr><td>Anos 2010 em diante</td><td>Smartphones, streaming e dispositivos inteligentes</td><td>A rede doméstica passa a conectar dezenas de aparelhos, não apenas computadores.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout"><strong>Resumo:</strong> a rede deixou de ser algo restrito a laboratórios e empresas. Hoje ela está na sala de casa, no bolso, na TV, nas câmeras, nas lâmpadas inteligentes e nos serviços em nuvem.</div>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — evolução histórica</h3>
+          <p>Monte uma pequena linha do tempo com três marcos importantes da evolução das redes.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap2-historia"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap3">
+        <span class="kicker">Capítulo 3</span>
+        <h2>Tipos de redes</h2>
+        <p class="lead">Existem vários tipos de redes. Para o usuário iniciante, o mais importante é compreender a diferença entre rede local, rede sem fio e internet.</p>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>LAN</h3>
+            <p><strong>Local Area Network</strong>, ou rede local. É a rede dentro de uma casa, escola, escritório ou laboratório. Normalmente usa cabos de rede, Wi‑Fi ou ambos.</p>
+          </div>
+          <div class="card">
+            <h3>WLAN</h3>
+            <p>É a rede local sem fio, conhecida popularmente como Wi‑Fi. Permite conectar celulares, notebooks e outros aparelhos sem cabo.</p>
+          </div>
+          <div class="card">
+            <h3>WAN</h3>
+            <p>É uma rede de longa distância. A internet pode ser entendida como a maior WAN, conectando redes do mundo inteiro.</p>
+          </div>
+          <div class="card">
+            <h3>PAN</h3>
+            <p>Rede pessoal. Exemplo: conexão Bluetooth entre celular e fone de ouvido, relógio inteligente ou caixa de som.</p>
+          </div>
+          <div class="card">
+            <h3>MAN</h3>
+            <p>Rede metropolitana, usada para conectar locais em uma cidade ou região. É mais comum em empresas, provedores e instituições.</p>
+          </div>
+          <div class="card">
+            <h3>VPN</h3>
+            <p>Rede privada virtual. Cria uma conexão protegida por túnel criptografado, muito usada por empresas, trabalho remoto e privacidade.</p>
+          </div>
+        </div>
+
+        <h3>Rede cabeada e rede sem fio</h3>
+        <table>
+          <thead><tr><th>Tipo</th><th>Vantagens</th><th>Cuidados</th></tr></thead>
+          <tbody>
+            <tr><td>Cabeada</td><td>Mais estável, menor atraso, boa para computador fixo, videogame, TV e trabalho.</td><td>Exige cabo, passagem física e portas disponíveis no roteador ou switch.</td></tr>
+            <tr><td>Wi‑Fi</td><td>Prática, flexível, funciona em celulares e notebooks, dispensa cabo.</td><td>Depende de distância, paredes, interferências, senha forte e boa configuração.</td></tr>
+          </tbody>
+        </table>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — tipos de rede</h3>
+          <p>Compare LAN, WLAN e WAN. Dê um exemplo prático de cada uma.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap3-tipos"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap4">
+        <span class="kicker">Capítulo 4</span>
+        <h2>Estrutura de uma rede doméstica</h2>
+        <p class="lead">A rede doméstica costuma ter uma estrutura simples: a internet chega pelo provedor, passa por um modem ou equipamento de fibra, entra no roteador e depois é distribuída para os aparelhos por Wi‑Fi ou cabo.</p>
+
+        <div class="diagram">
+          <div class="diagram-title">Caminho básico da internet dentro de casa</div>
+          <div class="home-network">
+            <div class="device"><div class="icon">🏢</div><strong>Provedor</strong><span>empresa de internet</span></div>
+            <div>
+              <div class="arrow"></div>
+              <div class="device"><div class="icon">📡</div><strong>Modem / ONT</strong><span>recebe o sinal externo</span></div>
+              <div class="arrow"></div>
+            </div>
+            <div class="device"><div class="icon">📶</div><strong>Roteador</strong><span>distribui para a casa</span></div>
+          </div>
+          <div style="height:18px"></div>
+          <div class="grid-4">
+            <div class="device"><div class="icon">💻</div><strong>PC</strong><span>cabo ou Wi‑Fi</span></div>
+            <div class="device"><div class="icon">📱</div><strong>Celular</strong><span>Wi‑Fi</span></div>
+            <div class="device"><div class="icon">📺</div><strong>TV</strong><span>cabo ou Wi‑Fi</span></div>
+            <div class="device"><div class="icon">🖨️</div><strong>Impressora</strong><span>rede local</span></div>
+          </div>
+        </div>
+
+        <h3>Rede doméstica não é apenas internet</h3>
+        <p>Muitas pessoas pensam que rede e internet são a mesma coisa. Não são. A internet é uma rede externa mundial. A rede doméstica é a rede interna da casa. Mesmo que a internet caia, alguns dispositivos da casa ainda podem se comunicar entre si, desde que a rede local continue funcionando.</p>
+
+        <div class="callout warn"><strong>Exemplo:</strong> se a internet estiver fora do ar, a impressora Wi‑Fi ainda pode imprimir a partir de um computador da mesma rede local, dependendo da configuração. O problema, nesse caso, não é necessariamente o Wi‑Fi, mas a conexão externa com o provedor.</div>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — rede doméstica</h3>
+          <p>Descreva o caminho da internet desde o provedor até um celular conectado ao Wi-Fi da casa.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap4-caminho"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap5">
+        <span class="kicker">Capítulo 5</span>
+        <h2>Equipamentos principais da rede</h2>
+        <p class="lead">Para configurar uma rede com segurança, o aluno precisa reconhecer a função de cada equipamento. Muitos problemas acontecem porque as pessoas confundem modem, roteador, repetidor, switch e ponto de acesso.</p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Modem</h3>
+            <p>É o equipamento que recebe o sinal do provedor quando a conexão usa tecnologias como cabo coaxial, linha telefônica ou outras formas de acesso. Em muitas instalações atuais, ele pode estar integrado ao roteador.</p>
+          </div>
+          <div class="card">
+            <h3>ONT</h3>
+            <p>Em conexões de fibra óptica, o equipamento que recebe a fibra geralmente é chamado de ONT. Ele converte o sinal óptico em dados que podem ser usados na rede interna.</p>
+          </div>
+          <div class="card">
+            <h3>Roteador</h3>
+            <p>Distribui a internet para os dispositivos da casa. Também cria a rede Wi‑Fi, atribui endereços IP, separa a rede interna da internet e aplica regras básicas de segurança.</p>
+          </div>
+          <div class="card">
+            <h3>Switch</h3>
+            <p>Expande a quantidade de portas de rede cabeada. É útil quando o roteador tem poucas portas para computador, TV, videogame, impressora, câmera ou outro equipamento.</p>
+          </div>
+          <div class="card">
+            <h3>Repetidor de sinal</h3>
+            <p>Recebe o Wi‑Fi existente e tenta retransmiti-lo para áreas com sinal fraco. Pode ajudar, mas se mal posicionado também pode reduzir a velocidade.</p>
+          </div>
+          <div class="card">
+            <h3>Ponto de acesso</h3>
+            <p>Também chamado de access point. Cria ou amplia uma rede Wi‑Fi, geralmente conectado por cabo ao roteador ou switch. Costuma ser mais estável que repetidor simples.</p>
+          </div>
+        </div>
+
+        <h3>Comparação rápida</h3>
+        <table>
+          <thead><tr><th>Equipamento</th><th>Função principal</th><th>Quando usar</th></tr></thead>
+          <tbody>
+            <tr><td>Modem / ONT</td><td>Receber o sinal do provedor</td><td>Obrigatório na maioria das instalações.</td></tr>
+            <tr><td>Roteador</td><td>Distribuir a rede e controlar o tráfego doméstico</td><td>Essencial para Wi‑Fi, cabos e organização da rede.</td></tr>
+            <tr><td>Switch</td><td>Aumentar portas de cabo</td><td>Quando faltam entradas Ethernet.</td></tr>
+            <tr><td>Repetidor</td><td>Reforçar Wi‑Fi sem cabo</td><td>Quando há área próxima com sinal médio, não nulo.</td></tr>
+            <tr><td>Access point</td><td>Criar Wi‑Fi a partir de cabo</td><td>Quando se deseja cobertura melhor e mais estável.</td></tr>
+            <tr><td>Mesh</td><td>Distribuir Wi‑Fi com vários pontos coordenados</td><td>Casas maiores, sobrados, paredes grossas ou muitos cômodos.</td></tr>
+          </tbody>
+        </table>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — equipamentos</h3>
+          <p>Explique a diferença entre modem/ONT, roteador, switch, repetidor, access point e mesh.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap5-equipamentos"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap6">
+        <span class="kicker">Capítulo 6</span>
+        <h2>Como a internet chega até sua casa</h2>
+        <p class="lead">A internet doméstica depende de uma empresa provedora. Ela entrega o sinal por fibra óptica, cabo, rádio, satélite, rede móvel ou outra tecnologia. Dentro da casa, esse sinal precisa ser convertido, organizado e distribuído.</p>
+
+        <h3>Principais formas de acesso</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Fibra óptica</h4><p>Usa luz para transmitir dados em cabos de fibra. É comum em planos atuais por oferecer boa velocidade e estabilidade.</p></div>
+          <div class="card"><h4>Cabo coaxial</h4><p>Usado por algumas operadoras de TV/internet. Pode oferecer boa velocidade, mas depende da infraestrutura local.</p></div>
+          <div class="card"><h4>Rádio</h4><p>Usa antenas para levar conexão a regiões onde cabeamento é difícil. Pode depender de visada e condições do ambiente.</p></div>
+          <div class="card"><h4>Rede móvel</h4><p>Usa 4G ou 5G por chip, modem ou roteador móvel. É útil em mobilidade ou onde não há internet fixa.</p></div>
+          <div class="card"><h4>Satélite</h4><p>Atende áreas remotas. Pode ter maior latência, mas tem se modernizado com novas constelações de satélites.</p></div>
+          <div class="card"><h4>ADSL</h4><p>Usa linha telefônica antiga. Ainda pode existir em alguns locais, mas foi substituída em muitas regiões.</p></div>
+        </div>
+
+        <div class="callout"><strong>Velocidade contratada não é garantia de velocidade em todos os cômodos.</strong> O plano do provedor indica a capacidade da conexão chegando à residência. O desempenho no quarto, sala ou quintal depende do roteador, paredes, distância, interferência, cabos, equipamentos e configuração.</div>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — chegada da internet</h3>
+          <p>Por que a velocidade contratada com o provedor pode não aparecer igual em todos os cômodos?</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap6-velocidade"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap7">
+        <span class="kicker">Capítulo 7</span>
+        <h2>Endereços, IP, DNS e DHCP</h2>
+        <p class="lead">Uma rede precisa identificar cada dispositivo. Para isso, usa endereços e serviços internos. O aluno não precisa decorar tudo, mas precisa saber o que esses termos significam para não se assustar ao ver essas opções no roteador ou no computador.</p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Endereço IP</h3>
+            <p>É um endereço numérico usado para identificar um dispositivo na rede. Exemplo comum em redes domésticas: <strong>192.168.0.25</strong> ou <strong>192.168.1.34</strong>.</p>
+          </div>
+          <div class="card">
+            <h3>Endereço MAC</h3>
+            <p>É uma identificação física da placa de rede do aparelho. Celular, notebook e TV têm endereços MAC próprios.</p>
+          </div>
+          <div class="card">
+            <h3>Gateway</h3>
+            <p>É a “saída” da rede local para outras redes. Em casa, normalmente o gateway é o roteador.</p>
+          </div>
+          <div class="card">
+            <h3>DNS</h3>
+            <p>Traduz nomes de sites em endereços IP. Quando você digita um endereço de site, o DNS ajuda a encontrar o servidor correto.</p>
+          </div>
+          <div class="card">
+            <h3>DHCP</h3>
+            <p>É o serviço que entrega endereços IP automaticamente para celulares, computadores, TVs e outros aparelhos.</p>
+          </div>
+          <div class="card">
+            <h3>NAT</h3>
+            <p>Permite que vários dispositivos da casa usem a mesma conexão externa de internet, separando rede interna e internet pública.</p>
+          </div>
+        </div>
+
+        <div class="mini-screen">
+          <div class="mini-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span> Exemplo didático de informações de rede</div>
+          <div class="mini-content">
+            <div class="input-row"><strong>IP do computador</strong><div class="fake-input">192.168.1.23</div></div>
+            <div class="input-row"><strong>Gateway</strong><div class="fake-input">192.168.1.1</div></div>
+            <div class="input-row"><strong>DNS</strong><div class="fake-input">Automático pelo roteador</div></div>
+            <div class="input-row"><strong>DHCP</strong><div class="fake-input">Ativado</div></div>
+          </div>
+        </div>
+
+        <div class="callout warn"><strong>Cuidado:</strong> alterar IP, DHCP, DNS ou gateway sem necessidade pode derrubar a conexão de alguns dispositivos. Para uso básico, geralmente é melhor deixar essas opções no modo automático.</div>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — endereçamento</h3>
+          <p>Explique a função de IP, gateway, DNS e DHCP usando uma comparação simples.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap7-enderecos"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap8">
+        <span class="kicker">Capítulo 8</span>
+        <h2>Wi‑Fi: nomes, senhas, bandas e sinal</h2>
+        <p class="lead">Wi‑Fi é a tecnologia que permite conexão sem fio entre dispositivos e a rede local. Para o usuário comum, os pontos mais importantes são: nome da rede, senha, tipo de segurança, distância, obstáculos e quantidade de aparelhos conectados.</p>
+
+        <h3>SSID: o nome da rede</h3>
+        <p>O nome da rede Wi‑Fi é chamado de SSID. É o nome que aparece no celular ou computador quando você procura uma rede. É melhor usar um nome simples, sem dados pessoais como número da casa, nome completo, CPF, apartamento ou telefone.</p>
+
+        <h3>Senha da rede</h3>
+        <p>A senha do Wi‑Fi deve ser forte e diferente da senha usada para acessar contas pessoais. Uma boa senha pode usar palavras não óbvias, números e símbolos. Evite senhas como <strong>12345678</strong>, <strong>minhacasa</strong>, <strong>nomedafamilia</strong> ou <strong>telefone</strong>.</p>
+
+        <h3>Bandas de frequência</h3>
+        <table>
+          <thead><tr><th>Banda</th><th>Características</th><th>Uso indicado</th></tr></thead>
+          <tbody>
+            <tr><td>2,4 GHz</td><td>Maior alcance, atravessa melhor paredes, mas costuma sofrer mais interferência.</td><td>Ambientes distantes, dispositivos simples, casas com muitas paredes.</td></tr>
+            <tr><td>5 GHz</td><td>Mais velocidade e menos interferência, porém menor alcance.</td><td>Streaming, chamadas de vídeo, jogos e dispositivos próximos ao roteador.</td></tr>
+            <tr><td>6 GHz</td><td>Presente em equipamentos mais novos com Wi‑Fi 6E/7. Pode oferecer maior capacidade e menos congestionamento.</td><td>Ambientes modernos com dispositivos compatíveis.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Segurança Wi‑Fi</h3>
+        <p>Prefira WPA3 quando o roteador e os dispositivos forem compatíveis. Caso contrário, use WPA2 com AES. Evite redes abertas, WEP, WPA antigo e configurações obsoletas, pois elas oferecem proteção fraca.</p>
+
+        <div class="callout ok"><strong>Regra simples:</strong> se existir a opção “WPA3-Personal”, ela tende a ser a escolha mais segura. Se alguns aparelhos antigos não conectarem, use “WPA2/WPA3” ou “WPA2-Personal AES”, quando disponível.</div>
+
+        <h3>O que prejudica o sinal?</h3>
+        <div class="grid-3">
+          <div class="card"><h4>Paredes e lajes</h4><p>Concreto, espelhos, metal e paredes grossas reduzem o alcance do Wi‑Fi.</p></div>
+          <div class="card"><h4>Distância</h4><p>Quanto mais longe do roteador, menor a qualidade do sinal.</p></div>
+          <div class="card"><h4>Interferência</h4><p>Micro-ondas, Bluetooth, vizinhos e muitos roteadores próximos podem interferir.</p></div>
+          <div class="card"><h4>Roteador escondido</h4><p>Colocar o roteador dentro de armário, rack fechado ou perto do chão piora a cobertura.</p></div>
+          <div class="card"><h4>Muitos aparelhos</h4><p>Vários dispositivos consumindo vídeo, jogos ou downloads podem deixar a rede lenta.</p></div>
+          <div class="card"><h4>Equipamento antigo</h4><p>Roteadores antigos podem não acompanhar planos de internet modernos.</p></div>
+        </div>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — Wi-Fi</h3>
+          <p>Avalie sua rede Wi-Fi: nome da rede, tipo de senha, distância do roteador, obstáculos e banda usada.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap8-wifi"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap9">
+        <span class="kicker">Capítulo 9</span>
+        <h2>Configurações básicas do roteador</h2>
+        <p class="lead">O roteador é o centro da rede doméstica. Ele deve ser configurado com cuidado, porque uma configuração fraca pode deixar a rede lenta, instável ou insegura.</p>
+
+        <div class="callout danger"><strong>Atenção:</strong> cada fabricante usa uma tela diferente. TP-Link, Intelbras, D-Link, Mercusys, Huawei, ZTE, Nokia, Vivo, Claro, Oi, TIM, Motorola e outros podem mudar nomes de menus. A lógica geral, porém, costuma ser parecida.</div>
+
+        <h3>Como acessar a configuração</h3>
+        <ol>
+          <li>Conecte o celular ou computador à rede do roteador.</li>
+          <li>Abra o navegador.</li>
+          <li>Digite o endereço de acesso informado na etiqueta ou manual do roteador. Exemplos comuns são <strong>192.168.0.1</strong> ou <strong>192.168.1.1</strong>, mas isso varia.</li>
+          <li>Entre com usuário e senha de administração.</li>
+          <li>Procure menus como “Wi‑Fi”, “Wireless”, “Rede sem fio”, “Segurança”, “Administração” ou “Sistema”.</li>
+        </ol>
+
+        <div class="router-ui" aria-label="Ilustração de painel de roteador">
+          <div class="router-head">
+            <strong>Painel do Roteador — Exemplo Didático</strong>
+            <div class="lights"><span class="light"></span><span class="light"></span><span class="light"></span></div>
+          </div>
+          <div class="settings-grid">
+            <div class="setting"><span>Nome da rede</span><strong>Casa_Ravell_5G</strong></div>
+            <div class="setting"><span>Segurança</span><strong>WPA2/WPA3</strong></div>
+            <div class="setting"><span>Senha Wi‑Fi</span><strong>••••••••••••••••</strong></div>
+            <div class="setting"><span>Rede de convidados</span><strong>Ativada</strong></div>
+            <div class="setting"><span>DHCP</span><strong>Automático</strong></div>
+            <div class="setting"><span>Firmware</span><strong>Atualizado</strong></div>
+          </div>
+        </div>
+
+        <h3>Configurações que todo iniciante deve conhecer</h3>
+        <div class="checklist">
+          <div class="check"><div class="box"></div><div><strong>Alterar a senha de administração do roteador.</strong><br>Essa é a senha usada para entrar no painel do roteador. Não é a mesma coisa que a senha do Wi‑Fi.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Alterar o nome padrão da rede Wi‑Fi.</strong><br>Evite nomes que revelem marca, modelo, endereço ou dados pessoais.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Usar senha forte no Wi‑Fi.</strong><br>Use uma senha longa, difícil de adivinhar e diferente de outras senhas.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Selecionar WPA3 ou WPA2-AES.</strong><br>Evite modos antigos como WEP, WPA antigo e TKIP.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Atualizar o firmware.</strong><br>Firmware é o sistema interno do roteador. Atualizações corrigem falhas e melhoram estabilidade.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Ativar rede de convidados.</strong><br>Visitantes podem usar internet sem acessar impressoras, computadores e dispositivos principais da casa.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Desativar recursos que não usa.</strong><br>Administração remota, WPS e UPnP podem aumentar riscos quando ficam ativos sem necessidade.</div></div>
+        </div>
+
+        <h3>Configurações que devem ser evitadas por iniciantes</h3>
+        <table>
+          <thead><tr><th>Configuração</th><th>Risco</th><th>Orientação</th></tr></thead>
+          <tbody>
+            <tr><td>Desativar DHCP</td><td>Dispositivos podem ficar sem IP.</td><td>Deixe ativado, salvo orientação técnica.</td></tr>
+            <tr><td>Alterar WAN sem saber</td><td>Pode derrubar a internet.</td><td>Não mexa sem dados do provedor.</td></tr>
+            <tr><td>Redirecionar portas</td><td>Pode expor dispositivos à internet.</td><td>Use apenas quando necessário e com orientação.</td></tr>
+            <tr><td>DMZ</td><td>Expõe um dispositivo de forma ampla.</td><td>Evite em rede doméstica comum.</td></tr>
+            <tr><td>Senha fraca para Wi‑Fi</td><td>Vizinhos ou invasores podem acessar sua rede.</td><td>Use senha longa e forte.</td></tr>
+          </tbody>
+        </table>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — roteador</h3>
+          <p>Liste cinco configurações que um usuário iniciante deve verificar no roteador para melhorar segurança e estabilidade.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap9-roteador"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap10">
+        <span class="kicker">Capítulo 10</span>
+        <h2>Repetidores, pontos de acesso e rede mesh</h2>
+        <p class="lead">Quando o Wi‑Fi não chega bem em todos os cômodos, muitas pessoas compram um repetidor. Ele pode ajudar, mas não é a única solução. Em alguns casos, um ponto de acesso ou sistema mesh oferece resultado melhor.</p>
+
+        <h3>Repetidor de sinal</h3>
+        <p>O repetidor capta o Wi‑Fi do roteador e retransmite o sinal. Ele deve ficar em um ponto intermediário: não muito perto do roteador e não dentro da área onde o sinal já está muito fraco.</p>
+
+        <div class="callout warn"><strong>Erro comum:</strong> colocar o repetidor no cômodo onde o Wi‑Fi quase não chega. Se ele recebe sinal ruim, ele apenas repete um sinal ruim. O ideal é posicioná-lo onde ainda exista sinal razoável.</div>
+
+        <h3>Ponto de acesso</h3>
+        <p>O ponto de acesso é conectado por cabo ao roteador ou switch e cria um Wi‑Fi em outra área. Em geral, é mais estável que repetidor, porque o caminho principal dos dados usa cabo.</p>
+
+        <h3>Rede mesh</h3>
+        <p>A rede mesh usa dois ou mais pontos que trabalham de forma coordenada. O objetivo é criar cobertura mais uniforme, com troca automática entre os pontos. Pode ser útil em casas grandes, sobrados ou ambientes com muitas paredes.</p>
+
+        <table>
+          <thead><tr><th>Solução</th><th>Ponto forte</th><th>Limitação</th><th>Indicação</th></tr></thead>
+          <tbody>
+            <tr><td>Repetidor</td><td>Barato e fácil de instalar</td><td>Pode reduzir velocidade e depende do sinal recebido</td><td>Pequenas áreas de sombra próximas ao roteador</td></tr>
+            <tr><td>Access point</td><td>Estável e eficiente</td><td>Precisa de cabo até o local</td><td>Ambientes onde é possível passar cabo</td></tr>
+            <tr><td>Mesh</td><td>Cobertura mais uniforme</td><td>Custa mais caro</td><td>Casas maiores ou muitos dispositivos</td></tr>
+          </tbody>
+        </table>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — cobertura Wi-Fi</h3>
+          <p>Em que situação você escolheria repetidor, access point ou rede mesh? Justifique.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap10-cobertura"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap11">
+        <span class="kicker">Capítulo 11</span>
+        <h2>Switches e conexões por cabo</h2>
+        <p class="lead">O switch é uma solução simples quando faltam portas de rede. Ele funciona como uma extensão organizada das conexões cabeadas.</p>
+
+        <div class="diagram">
+          <div class="diagram-title">Topologia simples com switch</div>
+          <div class="topology">
+            <div class="center">SWITCH</div>
+            <div class="wire w1"></div><div class="wire w2"></div><div class="wire w3"></div><div class="wire w4"></div><div class="wire w5"></div>
+            <div class="tdev td1">Roteador</div>
+            <div class="tdev td2">Computador</div>
+            <div class="tdev td3">Smart TV</div>
+            <div class="tdev td4">Videogame</div>
+            <div class="tdev td5">Impressora</div>
+          </div>
+        </div>
+
+        <h3>Quando usar cabo?</h3>
+        <p>Cabo Ethernet é recomendado para equipamentos fixos que precisam de estabilidade: computador de mesa, videogame, smart TV, câmera, servidor doméstico, impressora de rede e equipamentos de trabalho.</p>
+
+        <h3>Cabos e portas</h3>
+        <p>As conexões cabeadas domésticas geralmente usam cabo Ethernet com conector RJ45. Em roteadores e switches, as portas podem indicar velocidades como 100 Mbps, 1 Gbps ou mais. Se você contrata internet rápida, mas usa equipamento ou cabo antigo, pode não alcançar toda a velocidade disponível.</p>
+
+        <div class="grid-3">
+          <div class="card"><h4>Cat5e</h4><p>Muito usado em redes domésticas. Pode atender bem conexões de até 1 Gbps em condições adequadas.</p></div>
+          <div class="card"><h4>Cat6</h4><p>Oferece melhor margem técnica e é comum em instalações mais novas.</p></div>
+          <div class="card"><h4>Cat6A ou superior</h4><p>Usado em cenários que exigem maior desempenho, distâncias específicas ou preparação para redes mais rápidas.</p></div>
+        </div>
+
+        <div class="callout"><strong>Para iniciantes:</strong> um switch doméstico simples geralmente é “plug and play”: conecta o cabo do roteador em uma porta e os demais cabos nas outras portas. O equipamento distribui a rede automaticamente.</div>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — conexões por cabo</h3>
+          <p>Quando é melhor usar cabo Ethernet em vez de Wi-Fi? Cite pelo menos três exemplos.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap11-cabo"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap12">
+        <span class="kicker">Capítulo 12</span>
+        <h2>Segurança da rede doméstica</h2>
+        <p class="lead">A segurança da rede doméstica começa no roteador. Se ele estiver mal configurado, pessoas não autorizadas podem usar sua internet, atacar seus dispositivos, capturar informações ou deixar a conexão lenta.</p>
+
+        <h3>Principais perigos</h3>
+        <div class="grid-2">
+          <div class="card"><h3>Senha fraca</h3><p>Permite que pessoas próximas tentem acessar sua rede. Senhas previsíveis são um risco direto.</p></div>
+          <div class="card"><h3>Senha padrão do roteador</h3><p>Se a senha administrativa continuar igual à de fábrica, alguém pode alterar configurações importantes.</p></div>
+          <div class="card"><h3>Roteador desatualizado</h3><p>Falhas antigas podem ser exploradas quando o firmware não recebe correções.</p></div>
+          <div class="card"><h3>Dispositivos desconhecidos</h3><p>Aparelhos conectados sem autorização podem consumir internet ou tentar acessar recursos internos.</p></div>
+          <div class="card"><h3>Rede aberta</h3><p>Wi‑Fi sem senha permite entrada de qualquer pessoa próxima.</p></div>
+          <div class="card"><h3>Administração remota</h3><p>Permite acessar o painel do roteador pela internet. Se mal protegida, aumenta o risco.</p></div>
+        </div>
+
+        <h3>Boas práticas essenciais</h3>
+        <div class="checklist">
+          <div class="check"><div class="box"></div><div><strong>Troque a senha de administração do roteador.</strong><br>Essa senha protege a configuração do equipamento.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Troque o SSID padrão.</strong><br>Não use o modelo do roteador, nome da família ou endereço.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Use senha forte no Wi‑Fi.</strong><br>Prefira senha longa, com palavras imprevisíveis e caracteres variados.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Use WPA3 ou WPA2-AES.</strong><br>Evite WEP, WPA antigo e redes abertas.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Mantenha firmware atualizado.</strong><br>Verifique atualizações no aplicativo ou painel do roteador.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Crie rede de convidados.</strong><br>Use-a para visitas e dispositivos de menor confiança.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Revise a lista de dispositivos conectados.</strong><br>Procure nomes estranhos e remova aparelhos desconhecidos.</div></div>
+          <div class="check"><div class="box"></div><div><strong>Desative WPS se não usa.</strong><br>WPS facilita conexão, mas pode reduzir segurança em alguns cenários.</div></div>
+        </div>
+
+        <h3>Rede de convidados</h3>
+        <p>A rede de convidados cria uma rede separada para visitantes. Assim, a pessoa pode acessar a internet, mas não deve ter acesso aos dispositivos principais da casa, como computadores, impressoras, câmeras e arquivos compartilhados.</p>
+
+        <h3>Dispositivos inteligentes</h3>
+        <p>Lâmpadas, câmeras, smart TVs, tomadas inteligentes e assistentes virtuais também fazem parte da rede. Eles devem ser atualizados e, quando possível, colocados em rede de convidados ou rede separada, especialmente quando são equipamentos baratos ou sem atualização frequente.</p>
+
+        <div class="callout danger"><strong>Nunca compartilhe a senha administrativa do roteador.</strong> Para visitas, compartilhe apenas a senha da rede de convidados. A senha administrativa permite alterar a rede inteira.</div>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — segurança</h3>
+          <p>Crie um checklist com medidas para proteger uma rede doméstica contra uso indevido.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap12-seguranca"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap13">
+        <span class="kicker">Capítulo 13</span>
+        <h2>Problemas comuns e soluções básicas</h2>
+        <p class="lead">Nem todo problema de internet é culpa do provedor. Às vezes o problema está no Wi‑Fi, no cabo, no roteador, no dispositivo ou na configuração. O aluno deve aprender a investigar com calma.</p>
+
+        <table>
+          <thead><tr><th>Problema</th><th>Possíveis causas</th><th>Ações básicas</th></tr></thead>
+          <tbody>
+            <tr><td>Sem internet em todos os aparelhos</td><td>Falha no provedor, modem travado, roteador travado, cabo solto.</td><td>Verifique luzes, cabos, reinicie modem/roteador, aguarde alguns minutos e consulte o provedor.</td></tr>
+            <tr><td>Wi‑Fi aparece, mas não navega</td><td>Roteador conectado internamente, mas sem saída para internet.</td><td>Teste cabo, reinicie equipamentos e verifique se há aviso do provedor.</td></tr>
+            <tr><td>Sinal fraco em um cômodo</td><td>Distância, paredes, roteador mal posicionado.</td><td>Reposicione roteador, use 2,4 GHz, considere access point, repetidor ou mesh.</td></tr>
+            <tr><td>Internet lenta no Wi‑Fi</td><td>Muitos aparelhos, interferência, banda errada, roteador antigo.</td><td>Teste perto do roteador, compare cabo e Wi‑Fi, desligue downloads e streaming simultâneos.</td></tr>
+            <tr><td>Apenas um aparelho não conecta</td><td>Senha salva errada, problema no aparelho, bloqueio no roteador.</td><td>Esqueça a rede no aparelho, conecte novamente, reinicie o dispositivo.</td></tr>
+            <tr><td>Dispositivo desconhecido na rede</td><td>Senha compartilhada, invasão, aparelho com nome estranho.</td><td>Troque a senha Wi‑Fi, reinicie o roteador e reconecte apenas aparelhos conhecidos.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Sequência segura de diagnóstico</h3>
+        <ol>
+          <li>Verifique se o problema acontece em um aparelho ou em todos.</li>
+          <li>Veja se o Wi‑Fi está conectado ou apenas salvo.</li>
+          <li>Teste perto do roteador.</li>
+          <li>Reinicie o dispositivo com problema.</li>
+          <li>Reinicie roteador e modem/ONT.</li>
+          <li>Verifique cabos e energia.</li>
+          <li>Consulte o aplicativo ou atendimento do provedor.</li>
+          <li>Evite alterar configurações avançadas sem necessidade.</li>
+        </ol>
+
+        <div class="callout"><strong>Reiniciar não é mágica, mas ajuda.</strong> Roteadores são pequenos computadores. Reiniciar pode limpar travamentos temporários, renovar conexões e restaurar serviços internos.</div>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Atividade de fixação — solução de problemas</h3>
+          <p>Escolha um problema comum de rede e descreva uma sequência segura de diagnóstico.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap13-problemas"></div>
+        </div>
+</section>
+
+      <section class="page chapter" id="cap14">
+        <span class="kicker">Capítulo 14</span>
+        <h2>Exercícios práticos</h2>
+        <p class="lead">Os exercícios abaixo ajudam o aluno a aplicar o conteúdo sem mexer em configurações perigosas. O professor pode acompanhar a turma e adaptar conforme o equipamento disponível.</p>
+
+        <div class="exercise">
+          <h4>Exercício 1 — Identificar os equipamentos</h4>
+          <p>Observe a rede de uma casa, escola ou laboratório e responda:</p>
+          <ol>
+            <li>Onde está o equipamento do provedor?</li>
+            <li>Existe modem, ONT ou roteador integrado?</li>
+            <li>Quantas portas de cabo existem?</li>
+            <li>Há repetidor, switch ou access point?</li>
+            <li>Quais aparelhos usam Wi‑Fi e quais usam cabo?</li>
+          </ol>
+        </div>
+
+        <div class="exercise">
+          <h4>Exercício 2 — Verificar qualidade do Wi‑Fi</h4>
+          <p>Com um celular conectado ao Wi‑Fi, caminhe por diferentes cômodos e observe:</p>
+          <ol>
+            <li>Em qual cômodo o sinal fica mais forte?</li>
+            <li>Onde o sinal fica fraco?</li>
+            <li>Há muitas paredes entre o aparelho e o roteador?</li>
+            <li>O roteador está escondido, baixo ou dentro de armário?</li>
+          </ol>
+        </div>
+
+        <div class="exercise">
+          <h4>Exercício 3 — Checklist de segurança</h4>
+          <p>Sem alterar configurações avançadas, verifique com o professor ou responsável:</p>
+          <ol>
+            <li>O nome da rede revela dados pessoais?</li>
+            <li>A senha do Wi‑Fi é forte?</li>
+            <li>A senha de administração do roteador foi alterada?</li>
+            <li>A rede usa WPA2 ou WPA3?</li>
+            <li>Existe rede de convidados?</li>
+            <li>O firmware está atualizado?</li>
+          </ol>
+        </div>
+
+        <div class="exercise">
+          <h4>Exercício 4 — Criar um mapa simples da rede</h4>
+          <p>Desenhe no caderno: provedor, modem/ONT, roteador, switch, repetidor e os dispositivos conectados. Use linhas para cabo e ondas para Wi‑Fi.</p>
+        </div>
+
+        <div class="exercise">
+          <h4>Exercício 5 — Vocabulário técnico</h4>
+          <p>Explique com suas palavras os seguintes termos: roteador, Wi‑Fi, IP, DNS, DHCP, switch, repetidor, rede de convidados e senha administrativa.</p>
+        </div>
+      
+        <div class="answer-card">
+          <span class="ficha-tag">Responda</span>
+          <h3>Registro final dos exercícios</h3>
+          <p>Depois de fazer as práticas, escreva quais tarefas você conseguiu realizar e quais ainda exigem revisão.</p>
+          <div class="answer-box" contenteditable="true" data-placeholder="Digite sua resposta..." data-save-id="cap14-registro"></div>
+        </div>
+</section>
+
+
+      <section class="page chapter" id="estudo-dirigido">
+        <span class="kicker">15. Revisão</span>
+        <h2>Estudo dirigido e revisão</h2>
+        <p class="lead">Use esta seção para revisar os conceitos principais da ficha. A intenção é transformar a leitura em aprendizagem ativa.</p>
+        <div class="study-grid three">
+          <div class="study-card"><span class="ficha-tag">Conceitos</span><h3>Explique sem decorar</h3><ul class="mini-checklist"><li>Rede local</li><li>Internet</li><li>Wi-Fi</li><li>Roteador</li><li>DNS</li><li>DHCP</li></ul></div>
+          <div class="study-card"><span class="ficha-tag">Equipamentos</span><h3>Compare funções</h3><ul class="mini-checklist"><li>Modem/ONT</li><li>Roteador</li><li>Switch</li><li>Repetidor</li><li>Access point</li><li>Mesh</li></ul></div>
+          <div class="study-card"><span class="ficha-tag">Segurança</span><h3>Aplique no cotidiano</h3><ul class="mini-checklist"><li>Senha forte</li><li>WPA2/WPA3</li><li>Firmware atualizado</li><li>Rede de convidados</li><li>Desativar WPS se não usar</li><li>Evitar redes abertas</li></ul></div>
+        </div>
+        <div class="answer-card"><strong>Resumo com suas palavras:</strong> escreva um resumo de 8 a 12 linhas explicando como uma rede doméstica funciona.<div class="answer-box" contenteditable="true" data-placeholder="Digite seu resumo..." data-save-id="estudo-resumo"></div></div>
+      </section>
+
+      <section class="page chapter" id="projeto-final">
+        <span class="kicker">16. Projeto final</span>
+        <h2>Projeto prático: mapa da rede doméstica</h2>
+        <p class="lead">O projeto final consiste em observar uma rede real ou simulada e montar um diagnóstico básico. Não altere configurações críticas sem autorização do responsável pela rede.</p>
+        <div class="lab-card">
+          <h3>Etapas do projeto</h3>
+          <div class="lab-steps">
+            <div class="lab-step"><div><strong>Identifique os equipamentos.</strong><br>Localize modem/ONT, roteador, repetidor, switch, access point ou pontos mesh, caso existam.</div></div>
+            <div class="lab-step"><div><strong>Liste os dispositivos conectados.</strong><br>Anote celulares, notebooks, TVs, impressoras, videogames, câmeras e dispositivos inteligentes.</div></div>
+            <div class="lab-step"><div><strong>Observe o Wi-Fi.</strong><br>Registre nome da rede, banda usada, pontos de sinal fraco e locais com melhor conexão.</div></div>
+            <div class="lab-step"><div><strong>Avalie segurança.</strong><br>Verifique se há senha forte, segurança WPA2/WPA3, rede de convidados e atualização do roteador.</div></div>
+            <div class="lab-step"><div><strong>Proponha melhorias.</strong><br>Indique ajustes simples: reposicionar roteador, trocar senha fraca, usar cabo em equipamentos fixos ou avaliar access point/mesh.</div></div>
+          </div>
+        </div>
+        <div class="response-row">
+          <div class="answer-card"><strong>Mapa textual da rede:</strong><div class="answer-box" contenteditable="true" data-placeholder="Ex.: Provedor → ONT → roteador → celulares/TV/notebook..." data-save-id="projeto-mapa"></div></div>
+          <div class="answer-card"><strong>Melhorias sugeridas:</strong><div class="answer-box" contenteditable="true" data-placeholder="Digite as melhorias que você recomendaria..." data-save-id="projeto-melhorias"></div></div>
+        </div>
+      </section>
+
+      <section class="page chapter" id="autoavaliacao">
+        <span class="kicker">17. Autoavaliação</span>
+        <h2>Checklist de autoavaliação</h2>
+        <p class="lead">Marque mentalmente o que você já domina. Use os campos finais para registrar dúvidas e próximos passos.</p>
+        <div class="rubric">
+          <div class="rubric-card"><b>Conceitos</b>Consigo explicar rede, internet, LAN, WLAN, WAN e VPN em linguagem simples.</div>
+          <div class="rubric-card"><b>Equipamentos</b>Consigo diferenciar modem/ONT, roteador, switch, repetidor, access point e mesh.</div>
+          <div class="rubric-card"><b>Configurações</b>Entendo SSID, senha, WPA2/WPA3, bandas de Wi-Fi, DHCP, DNS e gateway.</div>
+          <div class="rubric-card"><b>Segurança</b>Sei indicar medidas básicas para proteger uma rede doméstica.</div>
+        </div>
+        <div class="response-row">
+          <div class="answer-card"><strong>O que aprendi melhor:</strong><div class="answer-box" contenteditable="true" data-placeholder="Digite aqui..." data-save-id="autoaprendi"></div></div>
+          <div class="answer-card"><strong>O que ainda preciso revisar:</strong><div class="answer-box" contenteditable="true" data-placeholder="Digite aqui..." data-save-id="autorevisar"></div></div>
+        </div>
+      </section>
+
+      <section class="page chapter" id="glossario">
+        <span class="kicker">Consulta rápida</span>
+        <h2>Glossário essencial</h2>
+        <div class="glossary">
+          <p><strong>Access point:</strong> equipamento que cria ou amplia uma rede Wi‑Fi, geralmente conectado por cabo.</p>
+          <p><strong>Banda:</strong> faixa de frequência usada pelo Wi‑Fi, como 2,4 GHz, 5 GHz ou 6 GHz.</p>
+          <p><strong>Cabo Ethernet:</strong> cabo usado para conexão de rede cabeada.</p>
+          <p><strong>DHCP:</strong> serviço que entrega endereços IP automaticamente aos dispositivos.</p>
+          <p><strong>DNS:</strong> sistema que traduz nomes de sites em endereços IP.</p>
+          <p><strong>Firmware:</strong> sistema interno do roteador, modem, câmera ou outro equipamento.</p>
+          <p><strong>Gateway:</strong> saída da rede local para outra rede, geralmente o roteador.</p>
+          <p><strong>IP:</strong> endereço lógico de um dispositivo em uma rede.</p>
+          <p><strong>LAN:</strong> rede local, como a rede de uma casa ou escritório.</p>
+          <p><strong>MAC:</strong> identificação física de uma placa de rede.</p>
+          <p><strong>Mesh:</strong> sistema de Wi‑Fi com múltiplos pontos coordenados.</p>
+          <p><strong>Modem:</strong> equipamento que recebe o sinal do provedor em algumas tecnologias de acesso.</p>
+          <p><strong>NAT:</strong> mecanismo que permite vários dispositivos usarem uma conexão externa.</p>
+          <p><strong>ONT:</strong> equipamento que recebe o sinal de fibra óptica.</p>
+          <p><strong>Repetidor:</strong> equipamento que retransmite um Wi‑Fi já existente.</p>
+          <p><strong>Roteador:</strong> equipamento que distribui a rede e encaminha dados entre rede doméstica e internet.</p>
+          <p><strong>SSID:</strong> nome da rede Wi‑Fi.</p>
+          <p><strong>Switch:</strong> equipamento que expande conexões de rede cabeada.</p>
+          <p><strong>WAN:</strong> rede de longa distância, como a internet.</p>
+          <p><strong>WPA2/WPA3:</strong> padrões de segurança usados para proteger redes Wi‑Fi.</p>
+          <p><strong>WPS:</strong> recurso de conexão rápida ao Wi‑Fi; pode ser desativado quando não usado.</p>
+        </div>
+      </section>
+
+      <section class="page chapter" id="resumo">
+        <span class="kicker">Encerramento</span>
+        <h2>Resumo final</h2>
+        <p>Uma rede doméstica segura começa com entendimento básico. O usuário não precisa dominar todos os detalhes técnicos, mas precisa saber identificar equipamentos, reconhecer configurações essenciais e evitar mudanças perigosas. O roteador deve ter senha administrativa forte, Wi‑Fi com criptografia segura, firmware atualizado e rede de convidados quando possível.</p>
+        <p>Para melhorar a estabilidade, prefira cabo em equipamentos fixos importantes; posicione bem o roteador; use repetidores com critério; considere access points ou mesh em casas maiores; e revise periodicamente os dispositivos conectados.</p>
+        <div class="callout ok"><strong>Mensagem principal:</strong> uma rede bem cuidada é mais rápida, mais estável e mais segura. Pequenos ajustes corretos evitam muitos problemas.</div>
+      </section>
+
+      <section class="page chapter" id="fontes">
+        <span class="kicker">Referências</span>
+        <h2>Fontes consultadas</h2>
+        <p>As recomendações desta apostila foram estruturadas a partir de materiais técnicos e educativos de segurança e redes, especialmente:</p>
+        <ul>
+          <li>CERT.br — Cartilha de Segurança para Internet, fascículo sobre redes: <a href="https://cartilha.cert.br/" target="_blank" rel="noopener">cartilha.cert.br</a></li>
+          <li>CGI.br / CERT.br — orientações sobre segurança em redes domésticas: <a href="https://cgi.br/noticia/releases/fasciculo-redes-do-cert-br-traz-orientacoes-de-como-manter-segura-a-sua-rede-domestica/" target="_blank" rel="noopener">cgi.br</a></li>
+          <li>CISA — orientações para proteger Wi‑Fi e rede doméstica: <a href="https://www.cisa.gov/" target="_blank" rel="noopener">cisa.gov</a></li>
+          <li>Cisco — fundamentos de redes, switches, roteadores e pontos de acesso: <a href="https://www.cisco.com/c/pt_br/solutions/small-business/resource-center/networking/networking-basics.html" target="_blank" rel="noopener">cisco.com</a></li>
+          <li>Microsoft — orientações sobre Wi‑Fi, WPA3 e redes domésticas: <a href="https://support.microsoft.com/pt-br/windows/wi-fi-mais-r%C3%A1pidas-e-seguras-no-windows-26177a28-38ed-1a8e-7eca-66f24dc63f09" target="_blank" rel="noopener">support.microsoft.com</a></li>
+        </ul>
+      </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+    <script>
+      (function(){
+        const storagePrefix = "ficha-redes-internet-";
+        function saveField(field){
+          const id = field.dataset.saveId;
+          if (!id) return;
+          localStorage.setItem(storagePrefix + id, field.innerHTML);
+        }
+        function loadField(field){
+          const id = field.dataset.saveId;
+          if (!id) return;
+          const saved = localStorage.getItem(storagePrefix + id);
+          if (saved !== null) field.innerHTML = saved;
+        }
+        function initAnswerBoxes(){
+          document.querySelectorAll('.answer-box[contenteditable="true"][data-save-id]').forEach((field) => {
+            loadField(field);
+            field.addEventListener('input', () => saveField(field));
+            field.addEventListener('blur', () => saveField(field));
+          });
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initAnswerBoxes);
+        } else {
+          initAnswerBoxes();
+        }
+      })();
+    </script>
+
+  <script>
+    (function () {
+      const stage = document.getElementById("viewerStage");
+      const book = document.getElementById("bookPages");
+      const pages = Array.from(book.querySelectorAll(".page"));
+      const sidebarLinks = Array.from(document.querySelectorAll("#sidebarNav a"));
+      const topLinks = Array.from(document.querySelectorAll(".topbar .nav a"));
+      const prevBtn = document.getElementById("prevPage");
+      const nextBtn = document.getElementById("nextPage");
+      const status = document.getElementById("viewerStatus");
+      const scalePreference = document.getElementById("scalePreference");
+      const scaleNote = document.getElementById("scaleNote");
+
+      if (!stage || pages.length === 0 || !prevBtn || !nextBtn || !status) {
+        return;
+      }
+
+      function prepareContentWrappers() {
+        pages.forEach((page) => {
+          if (page.querySelector(":scope > .page-content")) {
+            return;
+          }
+          const wrapper = document.createElement("div");
+          wrapper.className = "page-content";
+          while (page.firstChild) {
+            wrapper.appendChild(page.firstChild);
+          }
+          page.appendChild(wrapper);
+        });
+      }
+
+      function isDesktopViewer() {
+        return window.matchMedia("(min-width: 1081px)").matches;
+      }
+
+      let activeIndex = 0;
+
+      function indexFromHash() {
+        const hash = window.location.hash.replace("#", "");
+        if (!hash) {
+          return 0;
+        }
+        const found = pages.findIndex((page) => page.id === hash);
+        return found >= 0 ? found : 0;
+      }
+
+      function fitActivePage() {
+        if (!isDesktopViewer()) {
+          stage.classList.remove("is-scaled");
+          stage.classList.remove("mode-reading", "mode-fit");
+          return;
+        }
+
+        const page = pages[activeIndex];
+        const content = page.querySelector(":scope > .page-content");
+        if (!content) {
+          return;
+        }
+
+        const preference = scalePreference ? scalePreference.value : "reading";
+        stage.classList.toggle("mode-reading", preference === "reading");
+        stage.classList.toggle("mode-fit", preference === "fit");
+        content.classList.toggle("tight-mode", preference === "fit");
+
+        if (preference === "reading") {
+          content.style.transform = "none";
+          content.style.width = "auto";
+          stage.classList.remove("is-scaled");
+          if (scaleNote) {
+            scaleNote.textContent = "Modo leitura · rolagem ativa";
+          }
+          return;
+        }
+
+        content.style.transform = "scale(1)";
+        content.style.width = "100%";
+
+        const paddingAllowance = 4;
+        const availableW = page.clientWidth - paddingAllowance;
+        const availableH = page.clientHeight - paddingAllowance;
+        const naturalW = content.scrollWidth;
+        const naturalH = content.scrollHeight;
+
+        if (!naturalW || !naturalH) {
+          return;
+        }
+
+        const ratioW = availableW / naturalW;
+        const ratioH = availableH / naturalH;
+        let scale = Math.min(1, ratioW, ratioH);
+
+        const minScale = 0.56;
+        scale = Math.max(minScale, scale);
+
+        const forcedFit = Math.min(1, ratioW, ratioH);
+        if (scale > forcedFit) {
+          scale = forcedFit;
+        }
+
+        content.style.transform = "scale(" + scale + ")";
+        content.style.width = (100 / scale) + "%";
+        stage.classList.toggle("is-scaled", scale < 0.999);
+
+        if (scaleNote) {
+          const percent = Math.round(scale * 100);
+          scaleNote.textContent = "Modo reduzido · " + percent + "%";
+        }
+      }
+
+      function syncActiveLinks() {
+        const id = pages[activeIndex].id;
+        sidebarLinks.forEach((link) => {
+          link.classList.toggle("active", link.getAttribute("href") === "#" + id);
+        });
+      }
+
+      function updateStatus() {
+        status.textContent = "Tópico " + (activeIndex + 1) + " de " + pages.length;
+        prevBtn.disabled = activeIndex === 0;
+        nextBtn.disabled = activeIndex === pages.length - 1;
+      }
+
+      function showPage(index, updateHash) {
+        const nextIndex = Math.max(0, Math.min(pages.length - 1, index));
+        const hasChapterChanged = nextIndex !== activeIndex;
+        activeIndex = nextIndex;
+
+        pages.forEach((page, i) => {
+          page.classList.toggle("active", i === activeIndex);
+          page.setAttribute("aria-hidden", i === activeIndex ? "false" : "true");
+          if (i === activeIndex && hasChapterChanged) {
+            page.scrollTop = 0;
+          }
+        });
+
+        updateStatus();
+        syncActiveLinks();
+        fitActivePage();
+
+        if (updateHash) {
+          history.replaceState(null, "", "#" + pages[activeIndex].id);
+        }
+      }
+
+      function handleLinkClick(event) {
+        const href = event.currentTarget.getAttribute("href") || "";
+        if (!href.startsWith("#")) {
+          return;
+        }
+        const id = href.slice(1);
+        const idx = pages.findIndex((page) => page.id === id);
+        if (idx < 0) {
+          return;
+        }
+
+        if (isDesktopViewer()) {
+          event.preventDefault();
+          showPage(idx, true);
+        }
+      }
+
+      sidebarLinks.forEach((link) => link.addEventListener("click", handleLinkClick));
+      topLinks.forEach((link) => link.addEventListener("click", handleLinkClick));
+
+      prevBtn.addEventListener("click", () => showPage(activeIndex - 1, true));
+      nextBtn.addEventListener("click", () => showPage(activeIndex + 1, true));
+
+      if (scalePreference) {
+        scalePreference.addEventListener("change", () => {
+          showPage(activeIndex, false);
+        });
+      }
+
+      document.addEventListener("keydown", (event) => {
+        const editingTarget = event.target.closest ? event.target.closest('[contenteditable="true"], textarea, input, select') : null;
+        if (editingTarget) {
+          return;
+        }
+        if (!isDesktopViewer()) {
+          return;
+        }
+        if (event.key === "ArrowRight") {
+          showPage(activeIndex + 1, true);
+        }
+        if (event.key === "ArrowLeft") {
+          showPage(activeIndex - 1, true);
+        }
+      });
+
+      window.addEventListener("resize", () => {
+        if (!isDesktopViewer()) {
+          stage.classList.remove("is-scaled");
+          stage.classList.remove("mode-reading", "mode-fit");
+          pages.forEach((page) => {
+            const content = page.querySelector(":scope > .page-content");
+            if (content) {
+              content.style.transform = "none";
+              content.style.width = "auto";
+              content.classList.remove("tight-mode");
+            }
+            page.classList.add("active");
+            page.setAttribute("aria-hidden", "false");
+          });
+          return;
+        }
+
+        showPage(activeIndex, false);
+      });
+
+      prepareContentWrappers();
+      const initial = indexFromHash();
+      if (isDesktopViewer()) {
+        showPage(initial, false);
+      } else {
+        activeIndex = initial;
+        updateStatus();
+        syncActiveLinks();
+      }
+    })();
+  </script>
+</body>
+</html>
